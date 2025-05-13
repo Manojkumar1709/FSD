@@ -1,0 +1,105 @@
+/* Question 1: Styling Headings and Paragraphs */
+h1 {
+    text-align: center;
+
+  }
+  
+  p {
+    color: darkgray;
+    font-size: 20px;
+
+  }
+  
+  /* Question 2: Styling a Navigation Bar */
+  nav a {
+    text-decoration: none;
+    color: darkblue;
+    padding: 10px;
+    
+  }
+  
+  nav a:hover {
+    color: orange;
+  }
+  
+  /* Question 3: Box Styling */
+  .box {
+    background-color: lightgray;
+    padding: 20px;
+    border: 1px solid black;
+  }
+  
+  /* Question 4: Button Styling */
+  .btn {
+    border-radius: 10px;
+    padding: 10px 20px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+  }
+  
+  /* Question 5: Layout with Flexbox */
+  .container {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  /* Question 6: Hover Card with Shadow */
+  .card {
+    border: 1px solid #ccc;
+    padding: 20px;
+    transition: box-shadow 0.3s ease;
+  }
+  
+  .card:hover {
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Question 7: Style Even and Odd Rows Differently */
+  table tr:nth-child(even) {
+    background-color: lightgray;
+  }
+  
+  table tr:nth-child(odd) {
+    background-color: white;
+  }
+  
+  /* Question 8: Positioning a Badge on an Image */
+  .image-container {
+    position: relative;
+  }
+  
+  .badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: red;
+    color: white;
+    padding: 5px;
+  }
+  
+  /* Question 9: Responsive Text Size */
+  .title {
+    font-size: 32px;
+  }
+  
+  @media (max-width: 600px) {
+    .title {
+      font-size: 20px;
+    }
+  }
+  
+  /* Question 10: Navigation Menu with Active Link */
+  nav {
+    display: inline-flex;
+  }
+  
+  nav a {
+    padding: 10px 20px;
+    text-decoration: none;
+  }
+  
+  nav a.active {
+    border-bottom: 2px solid black;
+  }
+  

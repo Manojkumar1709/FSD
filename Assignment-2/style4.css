@@ -1,0 +1,9 @@
+.btn {
+    border-radius: 10px;
+    padding: 10px 20px;
+    background-color: #007BFF;
+    color: white;
+    border: none; /* Optional: removes default border */
+    cursor: pointer; /* Optional: changes cursor on hover */
+  }
+  

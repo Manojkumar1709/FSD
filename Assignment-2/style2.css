@@ -1,0 +1,9 @@
+nav a {
+    text-decoration: none;     /* Remove underlines */
+    color: #003366;            /* Dark blue */
+  }
+  
+  nav a:hover {
+    color: orange;             /* Orange on hover */
+  }
+  
