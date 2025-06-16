@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Square Calculator</title>
+</head>
+<body>
+  <h2>Square of a Number</h2>
+  <input type="text" id="numberInput" placeholder="Enter a number">
+  <button onclick="calculateSquare()">Calculate Square</button>
+  <p id="result"></p>
+
+  <script>
+    function calculateSquare() {
+      let input = document.getElementById("numberInput").value;
+      let number = parseFloat(input);
+
+      if (isNaN(number)) {
+        document.getElementById("result").innerText = "Please enter a valid number.";
+      } else {
+        let square = number * number;
+        document.getElementById("result").innerText = "Square of " + number + " is " + square + ".";
+      }
+    }
+  </script>
+</body>
+</html>
