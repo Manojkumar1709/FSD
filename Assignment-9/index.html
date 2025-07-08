@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Low Rating Feedback Extractor</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+    input {
+      padding: 6px;
+      margin: 4px 0;
+      display: block;
+      width: 300px;
+    }
+    button {
+      padding: 6px 12px;
+      margin: 10px 0;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 15px;
+    }
+    th, td {
+      border: 1px solid #aaa;
+      padding: 8px;
+      text-align: left;
+    }
+    th {
+      background-color: #eee;
+    }
+  </style>
+</head>
+<body>
+  <h2>Submit Feedback</h2>
+
+  <form id="feedbackForm">
+    <input type="text" id="courseId" placeholder="Course ID (e.g., CS101)" required />
+    <input type="text" id="instructor" placeholder="Instructor Name" required />
+    <input type="number" id="rating" placeholder="Rating (1–5)" min="1" max="5" required />
+    <input type="text" id="suggestions" placeholder="Suggestions" required />
+    <button type="submit">Add Feedback</button>
+  </form>
+
+  <h3>Low-Rating Course Feedbacks (≤ 2)</h3>
+  <div id="feedback-container"></div>
+
+  <script>
+    function createLowRatingExtractor(threshold = 2) {
+      const feedbacks = [
+        { feedbackId: 1, courseId: 'CS101', instructor: 'ABC', rating: 2, suggestions: 'Too fast' },
+        { feedbackId: 2, courseId: 'CS101', instructor: 'EFG', rating: 4, suggestions: 'Good' },
+        { feedbackId: 3, courseId: 'CS102', instructor: 'HIJ', rating: 1, suggestions: 'More examples' },
+        { feedbackId: 4, courseId: 'CS103', instructor: 'KLM', rating: 5, suggestions: 'Excellent' },
+        { feedbackId: 5, courseId: 'CS104', instructor: 'NOP', rating: 2, suggestions: 'More clarity' },
+      ];
+      return {
+        addFeedback: function(feedback) {
+          feedbacks.push(feedback);
+        },
+        getLowRatings: function() {
+          return feedbacks.filter(fb => fb.rating <= threshold);
+        }
+      };
+    }
+
+    const feedbackManager = createLowRatingExtractor();
+
+    const form = document.getElementById('feedbackForm');
+    const container = document.getElementById('feedback-container');
+
+    function displayLowFeedbacks() {
+      const lowFeedbacks = feedbackManager.getLowRatings();
+      if (lowFeedbacks.length === 0) {
+        container.innerHTML = '<p>No low-rating feedbacks found.</p>';
+        return;
+      }
+
+      let html = `
+        <table>
+          <thead>
+            <tr>
+              <th>Feedback ID</th>
+              <th>Course ID</th>
+              <th>Instructor</th>
+              <th>Rating</th>
+              <th>Suggestions</th>
+            </tr>
+          </thead>
+          <tbody>
+      `;
+
+      lowFeedbacks.forEach(fb => {
+        html += `
+          <tr>
+            <td>${fb.feedbackId}</td>
+            <td>${fb.courseId}</td>
+            <td>${fb.instructor}</td>
+            <td>${fb.rating}</td>
+            <td>${fb.suggestions}</td>
+          </tr>
+        `;
+      });
+
+      html += `</tbody></table>`;
+      container.innerHTML = html;
+    }
+
+    // ⏯️ Initial render
+    displayLowFeedbacks();
+
+    // ➕ Handle user feedback form
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const feedback = {
+        feedbackId: Date.now(),
+        courseId: document.getElementById('courseId').value.trim(),
+        instructor: document.getElementById('instructor').value.trim(),
+        rating: parseInt(document.getElementById('rating').value),
+        suggestions: document.getElementById('suggestions').value.trim()
+      };
+
+      feedbackManager.addFeedback(feedback); 
+      displayLowFeedbacks();
+      form.reset();
+    });
+  </script>
+</body>
+</html>
