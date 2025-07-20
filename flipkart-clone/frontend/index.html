@@ -88,17 +88,37 @@
 
                     const cartItemHtml = `
                         <div class="flex items-center justify-between bg-gray-50 p-3 rounded-lg shadow-sm">
-                            <div class="flex items-center">
+                            <div class="flex items-center flex-grow">
                                 <img src="${item.imageUrl || 'https://placehold.co/50x50/e0e7ff/3b82f6?text=P'}" alt="${item.name}" class="w-12 h-12 object-cover rounded mr-4">
-                                <div>
+                                <div class="flex-grow">
                                     <h3 class="font-semibold text-gray-800">${item.name}</h3>
-                                    <p class="text-sm text-gray-600">&#8377;${item.price.toLocaleString('en-IN')} x ${item.quantity}</p>
+                                    <p class="text-sm text-gray-600">&#8377;${item.price.toLocaleString('en-IN')}</p>
                                 </div>
                             </div>
-                            <span class="font-bold text-gray-900">&#8377;${itemTotal.toLocaleString('en-IN')}</span>
+                            <div class="flex items-center space-x-4 ml-4">
+                                <input type="number" min="1" value="${item.quantity}" data-product-id="${item.productId}" class="w-16 p-1 border border-gray-300 rounded-md text-center quantity-input">
+                                <span class="font-bold text-gray-900 w-24 text-right">&#8377;${itemTotal.toLocaleString('en-IN')}</span>
+                                <button class="text-red-600 hover:text-red-800 font-semibold remove-from-cart-btn" data-product-id="${item.productId}">Remove</button>
+                            </div>
                         </div>
                     `;
                     cartItemsContainer.insertAdjacentHTML('beforeend', cartItemHtml);
+                });
+
+                // Attach event listeners for quantity changes and remove buttons
+                document.querySelectorAll('.quantity-input').forEach(input => {
+                    input.addEventListener('change', (event) => {
+                        const productId = event.target.dataset.productId;
+                        const newQuantity = parseInt(event.target.value);
+                        updateCartQuantity(productId, newQuantity);
+                    });
+                });
+
+                document.querySelectorAll('.remove-from-cart-btn').forEach(button => {
+                    button.addEventListener('click', (event) => {
+                        const productId = event.target.dataset.productId;
+                        removeFromCart(productId);
+                    });
                 });
             }
             cartTotalSpan.textContent = `Total: &#8377;${total.toLocaleString('en-IN')}`;
@@ -120,6 +140,26 @@
             } else {
                 console.error('Product not found:', productId);
             }
+        }
+
+        // Function to update product quantity in cart (Update operation)
+        function updateCartQuantity(productId, newQuantity) {
+            const itemIndex = cart.findIndex(item => item.productId === productId);
+            if (itemIndex > -1) {
+                if (newQuantity > 0) {
+                    cart[itemIndex].quantity = newQuantity;
+                } else {
+                    // If quantity is 0 or less, remove the item
+                    cart.splice(itemIndex, 1);
+                }
+                updateCartDisplay();
+            }
+        }
+
+        // Function to remove product from cart (Delete operation)
+        function removeFromCart(productId) {
+            cart = cart.filter(item => item.productId !== productId);
+            updateCartDisplay();
         }
 
         document.addEventListener('DOMContentLoaded', async () => {
